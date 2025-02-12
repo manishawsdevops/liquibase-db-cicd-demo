@@ -1,0 +1,31 @@
+name: Liquibase CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  liquibase:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Install Liquibase
+        run: |
+          curl -O https://github.com/liquibase/liquibase/releases/latest/download/liquibase-<version>.tar.gz
+          tar -xzf liquibase-<version>.tar.gz
+          sudo mv liquibase /usr/local/bin
+
+      - name: Test Database Connection
+        run: liquibase --changeLogFile=changelog/db.changelog-master.yaml updateSQL
+
+      - name: Run Liquibase Update
+        run: liquibase --changeLogFile=changelog/db.changelog-master.yaml update

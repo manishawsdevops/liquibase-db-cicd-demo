@@ -1,0 +1,15 @@
+Here are the contents for the file: /liquibase-db-project/liquibase-db-project/changelog/changesets/changelog.yaml
+
+databaseChangeLog:
+  - changeSet:
+      id: "001"
+      author: "your_name"
+      changes:
+        - include:
+            file: "001-create-tables.sql"
+  - changeSet:
+      id: "002"
+      author: "your_name"
+      changes:
+        - include:
+            file: "002-insert-data.sql"
