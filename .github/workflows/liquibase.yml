@@ -4,28 +4,24 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  liquibase:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: 11
+        distribution: 'adopt' # You can specify other distributions like 'zulu', 'temurin', etc.
+        java-package: jdk
+        architecture: x64
 
-      - name: Install Liquibase
-        run: |
-          curl -O https://github.com/liquibase/liquibase/releases/latest/download/liquibase-<version>.tar.gz
-          tar -xzf liquibase-<version>.tar.gz
-          sudo mv liquibase /usr/local/bin
-
-      - name: Test Database Connection
-        run: liquibase --changeLogFile=changelog/db.changelog-master.yaml updateSQL
-
-      - name: Run Liquibase Update
-        run: liquibase --changeLogFile=changelog/db.changelog-master.yaml update
+    # Add other steps here
